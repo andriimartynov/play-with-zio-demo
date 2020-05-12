@@ -1,0 +1,3 @@
+# Home page
+GET        /              com.github.andriimartynov.play_with_zio_demo.controllers.Application.index
+GET        /search        com.github.andriimartynov.play_with_zio_demo.controllers.Application.search(q: String)
