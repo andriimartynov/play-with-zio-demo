@@ -28,25 +28,24 @@ package object mvc {
       zioActionBody(request)
     }
 
-    def rio[D](
-                zioActionBody: R[B] => RIO[Has[D], Result]
-              )(
-                implicit runtime: Runtime[_],
-                layer: Layer[Nothing, Has[D]]
-              ): Action[B] = actionBuilder.async { request =>
-      zioActionBody(request)
+    def rio[D: Tag](
+                     zioActionBody: R[B] => RIO[Has[D], Result]
+                   )(
+                     implicit runtime: Runtime[Has[D]]
+                   ): Action[B] = actionBuilder.async { request =>
+      runtime.unsafeRunToFuture(zioActionBody(request))
     }
 
-    def rio[D, A](
-                   bp: BodyParser[A]
-                 )(
-                   zioActionBody: R[A] => RIO[Has[D], Result]
-                 )(
-                   implicit runtime: Runtime[_],
-                   layer: Layer[Nothing, Has[D]]
-                 ): Action[A] = actionBuilder(bp).async { request =>
-      zioActionBody(request)
+    def rioWithBodyParser[D: Tag, A](
+                                      bp: BodyParser[A]
+                                    )(
+                                      zioActionBody: R[A] => RIO[Has[D], Result]
+                                    )(
+                                      implicit runtime: Runtime[Has[D]]
+                                    ): Action[A] = actionBuilder(bp).async { request =>
+      runtime.unsafeRunToFuture(zioActionBody(request))
     }
+
   }
 
   implicit private def unsafeRunToFuture[D](

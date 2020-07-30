@@ -10,8 +10,6 @@ import play.api.routing.Router
 import play.api.{Application, ApplicationLoader, BuiltInComponentsFromContext, LoggerConfigurator}
 import play.filters.HttpFiltersComponents
 import router.Routes
-import zio.Runtime
-import zio.internal.Platform
 
 import scala.concurrent.ExecutionContext
 
@@ -28,17 +26,14 @@ class ApplicationComponents(context: Context)
     with HttpComponents
     with I18nComponents
     with HttpFiltersComponents
-    with SearchComponents {
+    with SearchComponents
+    with ZioComponents {
 
   LoggerConfigurator(context.environment.classLoader).foreach {
     _.configure(context.environment, context.initialConfiguration, Map.empty)
   }
 
-  implicit val ec: ExecutionContext = actorSystem.dispatcher
-
-  implicit val runtime: Runtime[Null] = Runtime(null, Platform.fromExecutionContext(ec))
-
-  implicit val layer = httpClientLayer ++ searchLayer
+  val ec: ExecutionContext = actorSystem.dispatcher
 
   lazy val homeController = new controllers.Application(controllerComponents)
 

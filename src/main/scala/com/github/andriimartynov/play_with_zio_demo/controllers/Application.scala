@@ -4,11 +4,10 @@ import play.api.mvc._
 import com.github.andriimartynov.play_with_zio_demo.search.SearchService
 import com.github.andriimartynov.play_with_zio_demo.search.SearchService.SearchService
 import zio.mvc._
-import zio.{Layer, Runtime, Task}
+import zio.{Runtime, Task}
 
 class Application(cc: ControllerComponents)(
-  implicit runtime: Runtime[_],
-  layer: Layer[Nothing, SearchService]
+  implicit runtime: Runtime[SearchService]
 ) extends AbstractController(cc) {
 
   def index: Action[AnyContent] = Action.task { _ =>
