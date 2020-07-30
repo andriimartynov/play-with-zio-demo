@@ -12,16 +12,17 @@ object HttpClientService {
   }
 
   object Service {
-    def ws(client: WSClient): Service = new Service {
-      def get(url: String): Task[String] = Task.fromFuture {
-        ec =>
-          client.url(url).get().map(_.body)(ec)
+    def ws(client: WSClient): Service =
+      new Service {
+        def get(url: String): Task[String] =
+          Task.fromFuture { ec =>
+            client.url(url).get().map(_.body)(ec)
+          }
       }
-    }
   }
 
   lazy val ws: ZLayer[Has[WSClient], Nothing, HttpClientService] =
-    ZLayer.fromFunction(hasClient =>  Service.ws(hasClient.get[WSClient]))
+    ZLayer.fromFunction(hasClient => Service.ws(hasClient.get[WSClient]))
 
   def get(url: String): RIO[HttpClientService, String] =
     ZIO.accessM(_.get get url)

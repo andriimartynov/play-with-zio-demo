@@ -2,7 +2,7 @@ package com.github.andriimartynov.play_with_zio_demo.configuration
 
 import com.github.andriimartynov.play_with_zio_demo.configuration.AppConfiguration.HasAppConfiguration
 import play.api.Configuration
-import zio.{Layer, ZLayer}
+import zio.{ Layer, ZLayer }
 
 trait ConfigurationComponents {
   def configuration: Configuration

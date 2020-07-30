@@ -4,7 +4,7 @@ import com.github.andriimartynov.play_with_zio_demo.ZioComponents.ZEnv
 import com.github.andriimartynov.play_with_zio_demo.http.HttpClientService.HttpClientService
 import com.github.andriimartynov.play_with_zio_demo.search.SearchService.SearchService
 import zio.internal.Platform
-import zio.{Layer, Runtime}
+import zio.{ Layer, Runtime }
 
 import scala.concurrent.ExecutionContext
 

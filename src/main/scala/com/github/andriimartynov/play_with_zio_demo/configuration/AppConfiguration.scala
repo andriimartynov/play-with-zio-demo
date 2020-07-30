@@ -8,8 +8,8 @@ object AppConfiguration {
 }
 
 class AppConfiguration(
-                        config: Configuration
-                      ) extends SearchConfiguration {
+  config: Configuration
+) extends SearchConfiguration {
 
   val apiKey: String =
     config.get[String](SearchConfiguration.apiKey)
